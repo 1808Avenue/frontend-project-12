@@ -17,4 +17,4 @@
 
 <h2>Описание:</h2>
 <p><b>Дипломный проект</b> - строится на технологиях, используемых в повседневной работе фронтенд-разработчиками.<br><b>Его цель</b> - показать спектр всех стандартных задач, с которыми придётся столкнуться в реальной жизни.<br>Среди них: работа с веб-сокетами, взаимодействие с REST API, использование React (с хуками), Redux (через reduxjs/toolkit), организация роутинга на клиенте, авторизация и аутентификация, сборка (webpack) и деплой.</p>
-<a href="https://frontend-project-12-vv5w.onrender.com" target="_blank"><img src="https://i.ibb.co/vqymdpY/2022-12-23-22-25-27.png" alt="project" style="width: 95px; height: 55px;"></a>
+<a href="https://frontend-project-12-1kn7.onrender.com" target="_blank"><img src="https://i.ibb.co/vqymdpY/2022-12-23-22-25-27.png" alt="project" style="width: 95px; height: 55px;"></a>
