@@ -1,23 +1,34 @@
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import { useRef, useEffect } from 'react';
 import * as Yup from 'yup';
+import * as leoProfanity from 'leo-profanity';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import CloseButton from 'react-bootstrap/CloseButton';
 import { toast } from 'react-toastify';
+import { hideModal, selectModalState } from '../../slices/modalSlice';
+import { selectChannelNames } from '../../slices/channelsSlice';
+import { useSocket } from '../../contexts/SocketContext';
 
-const Rename = (props) => {
-  const { channels } = useSelector((store) => store.chat.content);
-  const channelNames = channels.map(({ name }) => name);
-  const inputEl = useRef(null);
+const Rename = () => {
   const { t } = useTranslation();
-
-  const { handlers, data } = props;
-  const { hideModal, handleRenameChannel } = handlers;
+  const dispatch = useDispatch();
+  const { renameChannel } = useSocket();
+  const channelNames = useSelector(selectChannelNames);
+  const { data } = useSelector(selectModalState);
   const currentChannel = data;
+  const inputEl = useRef(null);
+
+  const handleRenameChannel = (renamedChannel) => {
+    renameChannel(renamedChannel);
+  };
+
+  const handleHideModal = () => {
+    dispatch(hideModal());
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -35,13 +46,13 @@ const Rename = (props) => {
     onSubmit: (values, { resetForm }) => {
       const renamedChannel = {
         id: currentChannel.id,
-        name: values.name,
+        name: leoProfanity.clean(values.name),
         removable: currentChannel.removable,
       };
 
       handleRenameChannel(renamedChannel);
       resetForm(formik.initialValues);
-      hideModal();
+      handleHideModal();
       toast.success(t('notifications.success.channelRenamed'));
     },
   });
@@ -54,7 +65,7 @@ const Rename = (props) => {
     <Modal centered show>
       <Modal.Header>
         <Modal.Title>{t('modals.renameChannel.header')}</Modal.Title>
-        <CloseButton onClick={hideModal} aria-label="Close" data-bs-dismiss="modal" />
+        <CloseButton onClick={handleHideModal} aria-label="Close" data-bs-dismiss="modal" />
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -73,7 +84,7 @@ const Rename = (props) => {
             <Form.Label className="visually-hidden" htmlFor="name">{t('modals.renameChannel.inputLabel')}</Form.Label>
             <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
             <div className="d-flex justify-content-end">
-              <Button onClick={hideModal} variant="secondary" className="me-2">{t('modals.renameChannel.cancelButton')}</Button>
+              <Button onClick={handleHideModal} variant="secondary" className="me-2">{t('modals.renameChannel.cancelButton')}</Button>
               <Button type="submit">{t('modals.renameChannel.submitButton')}</Button>
             </div>
           </Form.Group>

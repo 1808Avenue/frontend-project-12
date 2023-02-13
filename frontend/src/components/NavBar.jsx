@@ -23,10 +23,11 @@ const LogOutButton = () => {
 };
 
 const NavBar = () => {
-  const user = localStorage.getItem('user');
-  const path = user ? routes.rootPagePath() : routes.loginPagePath();
+  const { isAuth } = useAuth();
+  const path = isAuth ? routes.rootPagePath() : routes.loginPagePath();
   const location = useLocation();
   const { t } = useTranslation();
+
   return (
     <nav className="shadow-sm navbar navbar-expand-lg navbar-light bg-white">
       <div className="container">

@@ -3,24 +3,32 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import CloseButton from 'react-bootstrap/CloseButton';
 import { toast } from 'react-toastify';
+import { useDispatch, useSelector } from 'react-redux';
+import { useSocket } from '../../contexts/SocketContext';
+import { hideModal, selectModalState } from '../../slices/modalSlice';
 
-const Remove = (props) => {
-  const { handlers, data } = props;
-  const { hideModal, handleRemoveChannel } = handlers;
-  const currentChannel = data;
+const Remove = () => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const { removeChannel } = useSocket();
+  const { data } = useSelector(selectModalState);
+  const remoteChannelId = data.id;
+
+  const handleHideModal = () => {
+    dispatch(hideModal());
+  };
 
   return (
     <Modal centered show>
       <Modal.Header>
         <Modal.Title>{t('modals.removeChannel.header')}</Modal.Title>
-        <CloseButton onClick={hideModal} aria-label="Close" data-bs-dismiss="modal" />
+        <CloseButton onClick={handleHideModal} aria-label="Close" data-bs-dismiss="modal" />
       </Modal.Header>
       <Modal.Body>
         <p className="lead">{t('modals.removeChannel.body')}</p>
         <div className="d-flex justify-content-end">
           <Button
-            onClick={hideModal}
+            onClick={handleHideModal}
             variant="secondary"
             className="me-2"
           >
@@ -28,8 +36,8 @@ const Remove = (props) => {
           </Button>
           <Button
             onClick={() => {
-              handleRemoveChannel({ id: currentChannel.id });
-              hideModal();
+              removeChannel({ id: remoteChannelId });
+              handleHideModal();
               toast.success(t('notifications.success.channelRemoved'));
             }}
             variant="danger"

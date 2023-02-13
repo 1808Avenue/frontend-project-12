@@ -1,24 +1,29 @@
 import { useTranslation } from 'react-i18next';
 import { useFormik } from 'formik';
 import { useEffect, useRef } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as Yup from 'yup';
+import * as leoProfanity from 'leo-profanity';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import CloseButton from 'react-bootstrap/CloseButton';
 import { toast } from 'react-toastify';
 import { useSocket } from '../../contexts/SocketContext';
+import { selectChannelNames } from '../../slices/channelsSlice';
+import { hideModal } from '../../slices/modalSlice';
 
-const Add = (props) => {
-  const { channels } = useSelector((store) => store.chat.content);
-  const channelNames = channels.map(({ name }) => name);
-  const { createChannel } = useSocket();
-  const inputEl = useRef(null);
+const Add = () => {
   const { t } = useTranslation();
+  const { createChannel } = useSocket();
+  const dispatch = useDispatch();
+  const channelNames = useSelector(selectChannelNames);
+  const inputEl = useRef(null);
 
-  const { handlers } = props;
-  const { hideModal } = handlers;
+  const handleHideModal = () => {
+    dispatch(hideModal());
+  };
+
 
   const formik = useFormik({
     initialValues: {
@@ -34,9 +39,9 @@ const Add = (props) => {
         .notOneOf(channelNames, t('modals.addChannel.validation.channelNameExists')),
     }),
     onSubmit: (values, { resetForm }) => {
-      createChannel(values);
+      createChannel({ name: leoProfanity.clean(values.name)});
       resetForm(formik.initialValues);
-      hideModal();
+      handleHideModal();
       toast.success(t('notifications.success.channelCreated'));
     },
   });
@@ -49,7 +54,7 @@ const Add = (props) => {
     <Modal centered show>
       <Modal.Header>
         <Modal.Title>{t('modals.addChannel.header')}</Modal.Title>
-        <CloseButton onClick={hideModal} aria-label="Close" data-bs-dismiss="modal" />
+        <CloseButton onClick={handleHideModal} aria-label="Close" data-bs-dismiss="modal" />
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
@@ -72,7 +77,7 @@ const Add = (props) => {
             </Form.Control.Feedback>
             <div className="d-flex justify-content-end">
               <Button
-                onClick={hideModal}
+                onClick={handleHideModal}
                 variant="secondary"
                 className="me-2"
               >

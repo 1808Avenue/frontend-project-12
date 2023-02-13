@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import Form from 'react-bootstrap/Form';
@@ -12,10 +12,10 @@ import { useAuth } from '../contexts/AuthContext';
 
 const Signup = () => {
   const navigate = useNavigate();
-  const { logIn } = useAuth();
+  const { t } = useTranslation();
+  const { logIn, isAuth } = useAuth();
   const [userExists, setUserExists] = useState(false);
   const inputEl = useRef(null);
-  const { t } = useTranslation();
 
   const formik = useFormik({
     initialValues: {
@@ -58,9 +58,7 @@ const Signup = () => {
   });
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
-
-    if (user) {
+    if (isAuth) {
       navigate(routes.rootPagePath());
       return;
     }
@@ -93,7 +91,7 @@ const Signup = () => {
                         required
                         id="username"
                         isInvalid={(formik.touched.username && formik.errors.username)
-                        || userExists}
+                          || userExists}
                       />
                       <Form.Label htmlFor="username">{t('signUpForm.usernameLabel')}</Form.Label>
                       <Form.Control.Feedback type="invalid" tooltip>
@@ -112,7 +110,7 @@ const Signup = () => {
                         type="password"
                         id="password"
                         isInvalid={(formik.touched.password && formik.errors.password)
-                        || userExists}
+                          || userExists}
                       />
                       <Form.Control.Feedback type="invalid" tooltip>
                         {formik.errors.password}
@@ -141,6 +139,13 @@ const Signup = () => {
                     <button type="submit" className="w-100 btn btn-outline-primary">{t('signUpForm.signUpButton')}</button>
                   </fieldset>
                 </Form>
+              </div>
+              <div className="card-footer p-4">
+                <div className="text-center">
+                  <Link className="text-decoration-none" to={routes.loginPagePath()}>
+                    {t('signUpForm.footer.backToLogin')}
+                  </Link>
+                </div>
               </div>
             </div>
           </div>

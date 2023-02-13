@@ -2,9 +2,8 @@ import {
   createContext, useContext, useEffect, useMemo,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import {
-  addMessage, addChannel, deleteChannel, updateChannel,
-} from '../slices/chatSlice';
+import { addChannel, deleteChannel, updateChannel } from '../slices/channelsSlice';
+import { addMessage } from '../slices/messagesSlice';
 
 const SocketIoContext = createContext({});
 

@@ -1,5 +1,6 @@
 export default {
   translation: {
+    loader: 'Загрузка...',
     navbar: {
       mainLabel: 'Hexlet Chat',
       logOutButton: 'Выйти',
@@ -22,6 +23,9 @@ export default {
       confirmPasswordLabel: 'Подтвердите пароль',
       signUpButton: 'Зарегистрироваться',
       signUpFailed: 'Такой пользователь уже существует',
+      footer: {
+        backToLogin: 'На главную',
+      },
       validation: {
         requiredField: 'Обязательное поле',
         usernameLength: 'От 3 до 20 символов',

@@ -1,6 +1,14 @@
+import { useSelector } from 'react-redux';
+import { selectModalState } from '../../slices/modalSlice.js';
 import Add from './Add.jsx';
 import Remove from './Remove.jsx';
 import Rename from './Rename.jsx';
+
+export const modalTypes = {
+  ADDING: 'adding',
+  REMOVING: 'removing',
+  RENAMING: 'renaming',
+};
 
 const modals = {
   adding: Add,
@@ -8,15 +16,21 @@ const modals = {
   renaming: Rename,
 };
 
+
 const getModal = (modalType) => modals[modalType];
 
-const renderModal = (modalType, handlers, data) => {
-  if (!modalType) {
+
+const ChannelModal = () => {
+  const { isOpened, type } = useSelector(selectModalState);
+
+  if (!isOpened) {
     return null;
   }
 
-  const Component = getModal(modalType);
-  return <Component handlers={{ ...handlers }} data={data} />;
+  const Component = getModal(type);
+
+  return <Component />
 };
 
-export default renderModal;
+
+export default ChannelModal;

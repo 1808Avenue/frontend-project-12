@@ -12,11 +12,11 @@ import routes from '../routes.js';
 import { useAuth } from '../contexts/AuthContext.jsx';
 
 const Login = () => {
-  const { logIn } = useAuth();
-  const [authFailed, setAuthFailed] = useState(false);
   const navigate = useNavigate();
-  const inputEl = useRef(null);
   const { t } = useTranslation();
+  const { logIn, isAuth } = useAuth();
+  const [authFailed, setAuthFailed] = useState(false);
+  const inputEl = useRef(null);
 
   const formik = useFormik({
     initialValues: {
@@ -46,9 +46,7 @@ const Login = () => {
   });
 
   useEffect(() => {
-    const user = localStorage.getItem('user');
-
-    if (user) {
+    if (isAuth) {
       navigate(routes.rootPagePath());
       return;
     }
