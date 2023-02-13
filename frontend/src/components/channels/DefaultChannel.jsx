@@ -1,6 +1,6 @@
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentChannelId, setCurrentChannel } from "../../slices/channelsSlice";
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectCurrentChannelId, setCurrentChannel } from '../../slices/channelsSlice';
 
 const DefaultChannel = ({ channel }) => {
   const { t } = useTranslation();

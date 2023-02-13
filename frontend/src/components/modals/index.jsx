@@ -16,9 +16,7 @@ const modals = {
   renaming: Rename,
 };
 
-
 const getModal = (modalType) => modals[modalType];
-
 
 const ChannelModal = () => {
   const { isOpened, type } = useSelector(selectModalState);
@@ -29,8 +27,7 @@ const ChannelModal = () => {
 
   const Component = getModal(type);
 
-  return <Component />
+  return <Component />;
 };
-
 
 export default ChannelModal;

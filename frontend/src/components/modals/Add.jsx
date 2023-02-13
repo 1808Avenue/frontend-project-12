@@ -24,7 +24,6 @@ const Add = () => {
     dispatch(hideModal());
   };
 
-
   const formik = useFormik({
     initialValues: {
       name: '',
@@ -39,7 +38,7 @@ const Add = () => {
         .notOneOf(channelNames, t('modals.addChannel.validation.channelNameExists')),
     }),
     onSubmit: (values, { resetForm }) => {
-      createChannel({ name: leoProfanity.clean(values.name)});
+      createChannel({ name: leoProfanity.clean(values.name) });
       resetForm(formik.initialValues);
       handleHideModal();
       toast.success(t('notifications.success.channelCreated'));

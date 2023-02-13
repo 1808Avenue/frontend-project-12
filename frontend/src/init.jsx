@@ -27,19 +27,19 @@ const init = async (socketInstance) => {
     });
 
   return (
-      <Provider store={store}>
-        <RollbarProvider config={rollbarConfig}>
-          <ErrorBoundary>
-            <SockeIoProvider socket={socketInstance}>
-              <I18nextProvider i18n={i18n}>
+    <Provider store={store}>
+      <RollbarProvider config={rollbarConfig}>
+        <ErrorBoundary>
+          <SockeIoProvider socket={socketInstance}>
+            <I18nextProvider i18n={i18n}>
               <BrowserRouter>
                 <App />
               </BrowserRouter>
-              </I18nextProvider>
-            </SockeIoProvider>
-          </ErrorBoundary>
-        </RollbarProvider>
-      </Provider>
+            </I18nextProvider>
+          </SockeIoProvider>
+        </ErrorBoundary>
+      </RollbarProvider>
+    </Provider>
 
   );
 };

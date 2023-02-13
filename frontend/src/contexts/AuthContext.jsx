@@ -1,5 +1,5 @@
 import {
-  createContext, useContext, useEffect, useMemo, useState,
+  createContext, useContext, useMemo, useState,
 } from 'react';
 
 const AuthContext = createContext({});

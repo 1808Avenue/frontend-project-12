@@ -1,16 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { animateScroll } from 'react-scroll';
-import { fetchContent, selectChannels, selectCurrentChannelId, selectLoadingStatus } from '../../slices/channelsSlice';
+import { useTranslation } from 'react-i18next';
+import {
+  fetchContent, selectChannels, selectLoadingStatus,
+} from '../../slices/channelsSlice';
 import NewChannel from './NewChannel';
 import DefaultChannel from './DefaultChannel';
 import { useAuth } from '../../contexts/AuthContext';
 import Loader from '../Loader';
 import { showModal } from '../../slices/modalSlice';
 import ChannelModal, { modalTypes } from '../modals';
-import { useTranslation } from 'react-i18next';
 
-const Channels = ({ inputEl }) => {
+const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { getAuthHeader } = useAuth();
@@ -26,7 +27,7 @@ const Channels = ({ inputEl }) => {
   }, []);
 
   if (loadingStatus === 'loading') {
-    return <Loader />
+    return <Loader />;
   }
 
   return (
