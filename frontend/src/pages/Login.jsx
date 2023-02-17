@@ -63,7 +63,7 @@ const Login = () => {
             <div className="card shadow-sm">
               <div className="card-body row p-5">
                 <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                  <img src="./images/form_img.jpeg" className="rounded-circle" alt="Войти" />
+                  <img style={{ widht: '200px', height: '200px', marginTop: '70px' }} src="./images/login_form.jpg" className="rounded-circle" alt="Войти" />
                 </div>
                 <Form onSubmit={formik.handleSubmit} className="col-12 col-md-6 mt-3 mt-mb-0">
                   <fieldset disabled={formik.isSubmitting}>
@@ -106,7 +106,7 @@ const Login = () => {
               <div className="card-footer p-4">
                 <div className="text-center">
                   <span>{t('logInForm.footer.signUpHeader')}</span>
-                  <Link to="/signup" className="text-decoration-none">{t('logInForm.footer.signUp')}</Link>
+                  <Link to={routes.signupPagePath()} className="text-decoration-none">{t('logInForm.footer.signUp')}</Link>
                 </div>
               </div>
             </div>

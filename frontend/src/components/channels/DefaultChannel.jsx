@@ -6,7 +6,7 @@ const DefaultChannel = ({ channel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentChannelId = useSelector(selectCurrentChannelId);
-  const active = channel.id === currentChannelId ? 'btn-secondary' : '';
+  const active = channel.id === currentChannelId ? 'btn-primary' : '';
 
   const handleSwitchChannel = (id) => {
     dispatch(setCurrentChannel(id));

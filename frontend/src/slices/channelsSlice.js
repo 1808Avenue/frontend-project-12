@@ -3,6 +3,12 @@ import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit'
 import axios from 'axios';
 import routes from '../routes';
 
+export const loadingProcess = {
+  IDLE: 'IDLE',
+  LOADING: 'LOADING',
+  FAILING: 'FAILING',
+};
+
 export const fetchContent = createAsyncThunk(
   'channels/fetchContent',
   async (getAuthHeader) => {
@@ -16,7 +22,7 @@ const channelsSlice = createSlice({
   initialState: {
     channels: [],
     currentChannelId: '',
-    loadingStatus: 'idle',
+    loadingStatus: loadingProcess.IDLE,
     error: null,
   },
   reducers: {
@@ -26,17 +32,18 @@ const channelsSlice = createSlice({
     },
     addChannel(state, action) {
       const channel = action.payload;
-
-      state.channels.push(channel);
-      state.currentChannelId = channel.id;
+      state.channels = [...state.channels, channel];
     },
     deleteChannel(state, action) {
-      const { id } = action.payload;
+      const remoteChannelId = action.payload.id;
       const { channels } = state;
-      const defaultChannel = state.channels[0];
+      const defaultChannelId = state.channels[0].id;
+      const { currentChannelId } = state;
 
-      state.channels = channels.filter((channel) => channel.id !== id);
-      state.currentChannelId = defaultChannel.id;
+      state.channels = channels.filter((channel) => channel.id !== remoteChannelId);
+      state.currentChannelId = (currentChannelId === remoteChannelId)
+        ? defaultChannelId
+        : currentChannelId;
     },
     updateChannel(state, action) {
       const renamedChannel = action.payload;
@@ -51,24 +58,25 @@ const channelsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(fetchContent.pending, (state) => {
-        state.loadingStatus = 'loading';
+        state.loadingStatus = loadingProcess.LOADING;
         state.error = null;
       })
       .addCase(fetchContent.fulfilled, (state, action) => {
         const content = action.payload;
 
-        state.loadingStatus = 'idle';
+        state.loadingStatus = loadingProcess.IDLE;
         state.channels = content.channels;
         state.currentChannelId = content.currentChannelId;
       })
       .addCase(fetchContent.rejected, (state, action) => {
-        state.loadingStatus = 'failed';
+        state.loadingStatus = loadingProcess.FAILING;
         state.error = action.error;
       });
   },
 });
 
 export const selectChannels = (state) => state.channels.channels;
+export const selectDefaultChannelId = (state) => state.channels.channels[0].id;
 export const selectCurrentChannelId = (state) => state.channels.currentChannelId;
 export const selectCurrentChannel = createSelector(
   [selectChannels, selectCurrentChannelId],

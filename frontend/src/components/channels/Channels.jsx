@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
-  fetchContent, selectChannels, selectLoadingStatus,
+  fetchContent, loadingProcess, selectChannels, selectLoadingStatus,
 } from '../../slices/channelsSlice';
 import NewChannel from './NewChannel';
 import DefaultChannel from './DefaultChannel';
@@ -26,7 +26,7 @@ const Channels = () => {
     dispatch(fetchContent(getAuthHeader));
   }, []);
 
-  if (loadingStatus === 'loading') {
+  if (loadingStatus === loadingProcess.LOADING) {
     return <Loader />;
   }
 

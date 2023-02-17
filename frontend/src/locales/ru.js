@@ -24,7 +24,8 @@ export default {
       signUpButton: 'Зарегистрироваться',
       signUpFailed: 'Такой пользователь уже существует',
       footer: {
-        backToLogin: 'На главную',
+        loginHeader: 'Есть аккаунт? ',
+        backToLogin: 'Войти',
       },
       validation: {
         requiredField: 'Обязательное поле',
@@ -46,7 +47,12 @@ export default {
         input: 'Введите сообщение...',
         inputLabel: 'Новое сообщение',
         submitButton: 'Отправить',
-        allMessages: 'сообщений',
+      },
+      pluralMessageCount: {
+        message_zero: '{{count}} сообщений',
+        message_one: '{{count}} сообщение',
+        message_few: '{{count}} сообщения',
+        message_many: '{{count}} сообщений',
       },
     },
     pageNotFound: {

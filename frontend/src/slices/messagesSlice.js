@@ -11,7 +11,7 @@ const messagesSlice = createSlice({
     addMessage(state, action) {
       const message = action.payload;
 
-      state.messages.push(message);
+      state.messages = [...state.messages, message];
     },
   },
   extraReducers: (builder) => {
@@ -31,9 +31,13 @@ const messagesSlice = createSlice({
 });
 
 export const selectMessages = (state) => state.messages.messages;
-export const selectMessageCount = createSelector(
+export const selectLastMessage = createSelector(
+  [selectMessages],
+  (messages) => messages[messages.length - 1],
+);
+export const selectCurrentChannelMessages = createSelector(
   [selectMessages, selectCurrentChannelId],
-  (messages, id) => messages.filter(({ channelId }) => channelId === id).length,
+  (messages, id) => messages.filter(({ channelId }) => channelId === id),
 );
 
 export const { addMessage } = messagesSlice.actions;

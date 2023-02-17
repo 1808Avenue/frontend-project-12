@@ -11,7 +11,7 @@ const NewChannel = ({ channel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentChannelId = useSelector(selectCurrentChannelId);
-  const active = channel.id === currentChannelId ? 'btn-secondary' : '';
+  const active = channel.id === currentChannelId ? 'btn-primary' : '';
 
   const handleRemoveChannel = (id) => {
     dispatch(showModal({ type: modalTypes.REMOVING, data: { id } }));

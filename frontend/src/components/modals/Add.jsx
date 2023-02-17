@@ -37,11 +37,16 @@ const Add = () => {
         .max(20, t('modals.addChannel.validation.channelNameLength'))
         .notOneOf(channelNames, t('modals.addChannel.validation.channelNameExists')),
     }),
-    onSubmit: (values, { resetForm }) => {
-      createChannel({ name: leoProfanity.clean(values.name) });
-      resetForm(formik.initialValues);
-      handleHideModal();
-      toast.success(t('notifications.success.channelCreated'));
+    onSubmit: async (values, { resetForm }) => {
+      try {
+        await createChannel({ name: leoProfanity.clean(values.name) });
+        resetForm(formik.initialValues);
+        handleHideModal();
+        toast.success(t('notifications.success.channelCreated'));
+      } catch (error) {
+        formik.setSubmitting(false);
+        console.log(error);
+      }
     },
   });
 
@@ -57,34 +62,36 @@ const Add = () => {
       </Modal.Header>
       <Modal.Body>
         <Form onSubmit={formik.handleSubmit}>
-          <Form.Group>
-            <Form.Control
-              name="name"
-              id="name"
-              className="mb-2"
-              ref={inputEl}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              isInvalid={formik.errors.name}
-              autoComplete="off"
-            />
-            <Form.Label className="visually-hidden" htmlFor="name">
-              {t('modals.addChannel.inputLabel')}
-            </Form.Label>
-            <Form.Control.Feedback type="invalid">
-              {formik.errors.name}
-            </Form.Control.Feedback>
-            <div className="d-flex justify-content-end">
-              <Button
-                onClick={handleHideModal}
-                variant="secondary"
-                className="me-2"
-              >
-                {t('modals.addChannel.cancelButton')}
-              </Button>
-              <Button type="submit">{t('modals.addChannel.submitButton')}</Button>
-            </div>
-          </Form.Group>
+          <fieldset disabled={formik.isSubmitting}>
+            <Form.Group>
+              <Form.Control
+                name="name"
+                id="name"
+                className="mb-2"
+                ref={inputEl}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                isInvalid={formik.errors.name}
+                autoComplete="off"
+              />
+              <Form.Label className="visually-hidden" htmlFor="name">
+                {t('modals.addChannel.inputLabel')}
+              </Form.Label>
+              <Form.Control.Feedback type="invalid">
+                {formik.errors.name}
+              </Form.Control.Feedback>
+              <div className="d-flex justify-content-end">
+                <Button
+                  onClick={handleHideModal}
+                  variant="secondary"
+                  className="me-2"
+                >
+                  {t('modals.addChannel.cancelButton')}
+                </Button>
+                <Button type="submit">{t('modals.addChannel.submitButton')}</Button>
+              </div>
+            </Form.Group>
+          </fieldset>
         </Form>
       </Modal.Body>
     </Modal>

@@ -2,7 +2,9 @@ import {
   createContext, useContext, useEffect, useMemo,
 } from 'react';
 import { useDispatch } from 'react-redux';
-import { addChannel, deleteChannel, updateChannel } from '../slices/channelsSlice';
+import {
+  addChannel, deleteChannel, setCurrentChannel, updateChannel,
+} from '../slices/channelsSlice';
 import { addMessage } from '../slices/messagesSlice';
 
 const SocketIoContext = createContext({});
@@ -16,25 +18,59 @@ const SockeIoProvider = ({ socket, children }) => {
     });
 
     socket.on('newChannel', (channel) => {
-      dispatch(addChannel(channel)); // { id: 6, name: "new channel", removable: true }
+      dispatch(addChannel(channel));
     });
 
     socket.on('removeChannel', (id) => {
-      dispatch(deleteChannel(id)); // { id: 8 };
+      dispatch(deleteChannel(id));
     });
 
     socket.on('renameChannel', (channel) => {
-      dispatch(updateChannel(channel)); // { id: 7, name: "new name channel", removable: true }
+      dispatch(updateChannel(channel));
     });
   }, []);
 
-  const sendMessage = (message) => socket.emit('newMessage', message); // {body: 'hello', channelId: 1, username: 'admin'}
+  const sendMessage = (message) => (new Promise((resolve, reject) => {
+    socket.timeout(5000).emit('newMessage', message, (err, response) => {
+      if (response?.status === 'ok') {
+        resolve(response);
+      } else {
+        reject(err);
+      }
+    });
+  }));
 
-  const createChannel = (channel) => socket.emit('newChannel', channel); // { name: "new channel" };
+  const createChannel = (channel) => (new Promise((resolve, reject) => {
+    socket.timeout(5000).emit('newChannel', channel, (err, response) => {
+      if (response?.status === 'ok') {
+        const newChannelId = response.data.id;
+        dispatch(setCurrentChannel(newChannelId));
+        resolve(response);
+      } else {
+        reject(err);
+      }
+    });
+  }));
 
-  const removeChannel = (id) => socket.emit('removeChannel', id); // { id: 8 }
+  const removeChannel = (id) => (new Promise((resolve, reject) => {
+    socket.timeout(5000).emit('removeChannel', id, (err, response) => {
+      if (response?.status === 'ok') {
+        resolve(response);
+      } else {
+        reject(err);
+      }
+    });
+  }));
 
-  const renameChannel = (channel) => socket.emit('renameChannel', channel);
+  const renameChannel = (channel) => (new Promise((resolve, reject) => {
+    socket.timeout(5000).emit('renameChannel', channel, (err, response) => {
+      if (response?.status === 'ok') {
+        resolve(response);
+      } else {
+        reject(err);
+      }
+    });
+  }));
 
   const value = useMemo(() => ({
     sendMessage,

@@ -2,6 +2,7 @@ import { useTranslation } from 'react-i18next';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import CloseButton from 'react-bootstrap/CloseButton';
+import { useState } from 'react';
 import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { useSocket } from '../../contexts/SocketContext';
@@ -11,11 +12,25 @@ const Remove = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { removeChannel } = useSocket();
+  const [isRemoved, setIsRemoved] = useState(false);
+
   const { data } = useSelector(selectModalState);
   const remoteChannelId = data.id;
 
   const handleHideModal = () => {
     dispatch(hideModal());
+  };
+
+  const handleRemoveChannel = async () => {
+    try {
+      setIsRemoved(true);
+      await removeChannel({ id: remoteChannelId });
+      handleHideModal();
+      toast.success(t('notifications.success.channelRemoved'));
+    } catch (error) {
+      setIsRemoved(false);
+      console.log(error);
+    }
   };
 
   return (
@@ -31,16 +46,14 @@ const Remove = () => {
             onClick={handleHideModal}
             variant="secondary"
             className="me-2"
+            disabled={isRemoved}
           >
             {t('modals.removeChannel.cancelButton')}
           </Button>
           <Button
-            onClick={() => {
-              removeChannel({ id: remoteChannelId });
-              handleHideModal();
-              toast.success(t('notifications.success.channelRemoved'));
-            }}
+            onClick={handleRemoveChannel}
             variant="danger"
+            disabled={isRemoved}
           >
             {t('modals.removeChannel.removeButton')}
           </Button>
