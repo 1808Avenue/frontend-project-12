@@ -51,8 +51,7 @@ export default {
       pluralMessageCount: {
         message_zero: '{{count}} messages',
         message_one: '{{count}} message',
-        message_few: '{{count}} messages',
-        message_many: '{{count}} messages',
+        message_other: '{{count}} messages',
       },
     },
     pageNotFound: {

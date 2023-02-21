@@ -5,17 +5,16 @@ import {
 const AuthContext = createContext({});
 
 const AuthProvider = ({ children }) => {
-  const user = localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null;
+  const [user, setUser] = useState(localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null);
   const token = user?.token;
-  const [isAuth, setIsAuth] = useState(!!user?.token);
 
   const logIn = (data) => {
     localStorage.setItem('user', JSON.stringify(data));
-    setIsAuth(true);
+    setUser(data);
   };
   const logOut = () => {
     localStorage.removeItem('user');
-    setIsAuth(false);
+    setUser(null);
   };
 
   const getAuthHeader = () => {
@@ -27,11 +26,11 @@ const AuthProvider = ({ children }) => {
 
   const value = useMemo(() => ({
     user,
-    isAuth,
+    isAuth: !!user?.token,
     logIn,
     logOut,
     getAuthHeader,
-  }), [isAuth]);
+  }), [user]);
 
   return (
     <AuthContext.Provider value={value}>

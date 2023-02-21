@@ -1,13 +1,13 @@
-import { Navigate, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import routes from '../routes';
 
-const PrivateRoute = ({ children }) => {
+const PrivateRoute = () => {
   const location = useLocation();
   const { isAuth } = useAuth();
 
   return isAuth
-    ? children
+    ? <Outlet />
     : <Navigate to={routes.loginPagePath()} state={{ from: location.pathname }} />;
 };
 

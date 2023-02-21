@@ -67,6 +67,7 @@ const channelsSlice = createSlice({
         state.loadingStatus = loadingProcess.IDLE;
         state.channels = content.channels;
         state.currentChannelId = content.currentChannelId;
+        state.error = null;
       })
       .addCase(fetchContent.rejected, (state, action) => {
         state.loadingStatus = loadingProcess.FAILING;
@@ -87,6 +88,7 @@ export const selectChannelNames = createSelector(
   (channels) => channels.map(({ name }) => name),
 );
 export const selectLoadingStatus = (state) => state.channels.loadingStatus;
+export const selectFetchError = (state) => state.channels.error;
 
 export const {
   setCurrentChannel, addChannel, deleteChannel, updateChannel,
