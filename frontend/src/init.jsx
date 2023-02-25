@@ -11,8 +11,7 @@ import { SockeIoProvider } from './contexts/SocketContext.jsx';
 
 const init = async (socketInstance) => {
   const i18n = i18next.createInstance();
-  const defaultLanguage = 'ru';
-  const ruDictionary = leoProfanity.getDictionary(defaultLanguage);
+  const ruDictionary = leoProfanity.getDictionary('ru');
   leoProfanity.add(ruDictionary);
 
   const rollbarConfig = {
@@ -24,7 +23,7 @@ const init = async (socketInstance) => {
     .use(initReactI18next)
     .init({
       resources,
-      fallbackLng: localStorage.language,
+      fallbackLng: localStorage.language ? localStorage.language : 'ru',
     });
 
   return (
