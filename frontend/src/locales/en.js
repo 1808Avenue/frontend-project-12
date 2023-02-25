@@ -88,6 +88,11 @@ export default {
           channelNameExists: 'Must be unique',
         },
       },
+      networkError: {
+        header: 'Something went wrong',
+        body: 'Refresh the page!',
+        button: 'Refresh',
+      },
     },
     notifications: {
       success: {

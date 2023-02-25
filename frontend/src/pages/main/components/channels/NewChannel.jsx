@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import { selectCurrentChannelId, setCurrentChannel } from '../../../../slices/channelsSlice';
 import { showModal } from '../../../../slices/modalSlice';
-import { modalTypes } from '../../../../common-components/modals/index.jsx';
+import { modalTypes } from '../../../common-components/modals/index.jsx';
 
 const NewChannel = ({ channel }) => {
   const { t } = useTranslation();

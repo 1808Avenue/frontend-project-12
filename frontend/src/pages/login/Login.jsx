@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Container from 'react-bootstrap/Container';
-import NavBar from '../../common-components/navbar/NavBar.jsx';
+import NavBar from '../common-components/navbar/NavBar.jsx';
 import routes from '../../routes.js';
 import LoginForm from './components/Form.jsx';
 

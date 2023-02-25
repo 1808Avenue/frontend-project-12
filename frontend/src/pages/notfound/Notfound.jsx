@@ -1,13 +1,13 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import NavBar from '../../common-components/navbar/NavBar.jsx';
+import NavBar from '../common-components/navbar/NavBar.jsx';
 import { useAuth } from '../../contexts/AuthContext.jsx';
 import routes from '../../routes.js';
 
 const Notfound = () => {
   const { t } = useTranslation();
-  const { isAuth } = useAuth();
-  const path = isAuth ? routes.rootPagePath() : routes.loginPagePath();
+  const { user } = useAuth();
+  const path = user ? routes.rootPagePath() : routes.loginPagePath();
 
   return (
     <div className="d-flex flex-column h-100">

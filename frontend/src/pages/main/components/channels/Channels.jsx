@@ -1,15 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import Modal from 'react-bootstrap/Modal';
 import {
   fetchContent, loadingProcess, selectChannels, selectFetchError, selectLoadingStatus,
 } from '../../../../slices/channelsSlice';
 import NewChannel from './NewChannel';
 import DefaultChannel from './DefaultChannel';
 import { useAuth } from '../../../../contexts/AuthContext';
-import Loader from '../../../../common-components/loader/Loader.jsx';
-import { showModal } from '../../../../slices/modalSlice';
-import ChannelModal, { modalTypes } from '../../../../common-components/modals/index.jsx';
+import Loader from '../../../common-components/loader/Loader.jsx';
+import { showModal, selectModalState } from '../../../../slices/modalSlice';
+import ChannelModal, { modalTypes } from '../../../common-components/modals/index.jsx';
 
 const Channels = () => {
   const { t } = useTranslation();
@@ -18,6 +19,7 @@ const Channels = () => {
   const channels = useSelector(selectChannels);
   const loadingStatus = useSelector(selectLoadingStatus);
   const fetchError = useSelector(selectFetchError);
+  const { isOpened } = useSelector(selectModalState);
 
   const handleNewChannel = () => {
     dispatch(showModal({ type: modalTypes.ADDING }));
@@ -32,7 +34,11 @@ const Channels = () => {
   }
 
   if (fetchError) {
-    logOut();
+    if (fetchError.message === 'Request failed with status code 401') {
+      logOut();
+    } else {
+      dispatch(showModal({ type: modalTypes.ERROR }));
+    }
   }
 
   return (
@@ -53,7 +59,9 @@ const Channels = () => {
           : <DefaultChannel channel={channel} key={channel.id} />
         ))}
       </ul>
-      <ChannelModal />
+      <Modal centered show={isOpened}>
+        <ChannelModal />
+      </Modal>
     </div>
   );
 };

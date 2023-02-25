@@ -89,6 +89,11 @@ export default {
           channelNameExists: 'Должно быть уникальным',
         },
       },
+      networkError: {
+        header: 'Что-то пошло не так',
+        body: 'Обновите страницу!',
+        button: 'Обновить',
+      },
     },
     notifications: {
       success: {

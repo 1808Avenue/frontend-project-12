@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import routes from '../../routes';
-import NavBar from '../../common-components/navbar/NavBar.jsx';
+import NavBar from '../common-components/navbar/NavBar.jsx';
 import SignupForm from './components/Form';
 
 const Signup = () => {
