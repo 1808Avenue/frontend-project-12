@@ -34,7 +34,7 @@ const Channels = () => {
   }
 
   if (fetchError) {
-    if (fetchError.message === 'Request failed with status code 401') {
+    if (fetchError.code === 'ERR_BAD_REQUEST') {
       logOut();
     } else {
       dispatch(showModal({ type: modalTypes.ERROR }));
