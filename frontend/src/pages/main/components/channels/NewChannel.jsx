@@ -10,6 +10,7 @@ import { modalTypes } from '../../../common-components/modals/index.jsx';
 const NewChannel = ({ channel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const currentChannelId = useSelector(selectCurrentChannelId);
   const active = channel.id === currentChannelId ? 'btn-primary' : '';
 

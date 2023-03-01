@@ -5,6 +5,7 @@ import { selectCurrentChannelId, setCurrentChannel } from '../../../../slices/ch
 const DefaultChannel = ({ channel }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const currentChannelId = useSelector(selectCurrentChannelId);
   const active = channel.id === currentChannelId ? 'btn-primary' : '';
 
