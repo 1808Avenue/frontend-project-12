@@ -16,6 +16,7 @@ const Channels = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { getAuthHeader, logOut } = useAuth();
+
   const channels = useSelector(selectChannels);
   const loadingStatus = useSelector(selectLoadingStatus);
   const fetchError = useSelector(selectFetchError);
